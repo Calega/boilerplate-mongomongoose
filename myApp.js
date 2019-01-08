@@ -12,6 +12,10 @@
 // `mongoose`. Store your **mLab** database URI in the private `.env` file 
 // as `MONGO_URI`. Connect to the database using `mongoose.connect(<Your URI>)`
 
+const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+mongoose.connect(process.env.MONGO_URI);
 
 /** # SCHEMAS and MODELS #
 /*  ====================== */
@@ -36,9 +40,13 @@
 // fields, use simple validators like `required` or `unique`, and set
 // `default` values. See the [mongoose docs](http://mongoosejs.com/docs/guide.html).
 
-// <Your code here >
+var personSchema = new Schema({
+    name:  String,
+    age: Number,
+    favoriteFoods: [String]
+  });
 
-var Person /* = <Your Model> */
+const Person = mongoose.model('Person', personSchema);
 
 // **Note**: GoMix is a real server, and in real servers interactions with
 // the db are placed in handler functions, to be called when some event happens
@@ -77,8 +85,13 @@ var Person /* = <Your Model> */
 
 var createAndSavePerson = function(done) {
   
-  done(null /*, data*/);
-
+  var lucas = new Person({
+    name: 'lucas', 
+    age: 25, 
+    favoriteFoods: ['strogonoff', 'muffin']
+  });
+  
+  lucas.save((err, data)=> err ? done(err) : done(null, data)); 
 };
 
 /** 4) Create many People with `Model.create()` */
@@ -91,9 +104,9 @@ var createAndSavePerson = function(done) {
 // 'arrayOfPeople'.
 
 var createManyPeople = function(arrayOfPeople, done) {
-    
-    done(null/*, data*/);
-    
+    Person.create(arrayOfPeople,function(err,data) {
+      err ? done(err) : done(null,data)
+    });
 };
 
 /** # C[R]UD part II - READ #
