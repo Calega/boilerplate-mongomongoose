@@ -156,7 +156,9 @@ var findOneByFood = function(food, done) {
 
 var findPersonById = function(personId, done) {
   
-  done(null/*, data*/);
+  Person.findById(personId,function(err,data) {
+    err ? done(err) : done(null,data);  
+  });
   
 };
 
@@ -188,7 +190,18 @@ var findPersonById = function(personId, done) {
 var findEditThenSave = function(personId, done) {
   var foodToAdd = 'hamburger';
   
-  done(null/*, data*/);
+  Person.findById(personId,function(err,data) {
+    if (err) done(err);
+    
+    // Pushing
+    console.log(data);
+    data.favoriteFoods.push(foodToAdd);
+    
+    // Saving
+    data.save((err,data) => {
+        err ? done(err) : done(null,data);
+    } );
+  });
 };
 
 /** 9) New Update : Use `findOneAndUpdate()` */
