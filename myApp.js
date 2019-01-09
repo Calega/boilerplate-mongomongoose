@@ -194,7 +194,6 @@ var findEditThenSave = function(personId, done) {
     if (err) done(err);
     
     // Pushing
-    console.log(data);
     data.favoriteFoods.push(foodToAdd);
     
     // Saving
@@ -221,8 +220,11 @@ var findEditThenSave = function(personId, done) {
 
 var findAndUpdate = function(personName, done) {
   var ageToSet = 20;
-
-  done(null/*, data*/);
+  
+  Person.findOneAndUpdate( { name: personName }, { age: ageToSet }, { new: true }, function(err,data) {
+     err ? done(err) : done(null,data);    
+  });
+ 
 };
 
 /** # CRU[D] part IV - DELETE #
@@ -237,7 +239,9 @@ var findAndUpdate = function(personName, done) {
 
 var removeById = function(personId, done) {
   
-  done(null/*, data*/);
+  Person.findByIdAndRemove(personId, function(err,data) {
+     err ? done(err) : done(null,data);
+  });
     
 };
 
