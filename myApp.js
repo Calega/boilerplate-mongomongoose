@@ -138,8 +138,10 @@ var findPeopleByName = function(personName, done) {
 // argument `food` as search key
 
 var findOneByFood = function(food, done) {
-
-  done(null/*, data*/);
+  
+  Person.findOne(food.favoriteFoods,function(err,data) {
+    err ? done(err) : done(null,data);
+  });
   
 };
 
